@@ -40,26 +40,26 @@ class UserController extends Controller
 
     function UserRegistration(Request $request)
     {
-        // return $request->all();
-        try {
-            User::create([
-                'firstName' => $request->input('firstName'),
-                'lastName' => $request->input('lastName'),
-                'email' => $request->input('email'),
-                'phone' => $request->input('phone'),
-                'password' => $request->input('password')
-            ]);
+        $request->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'password' => 'required',
+        ]);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'User Registration Successfully!'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Unauthorized!'
-            ], 200);
-        }
+        User::create([
+            'firstName' => $request->input('firstName'),
+            'lastName' => $request->input('lastName'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'password' => $request->input('password')
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User Registration Successfully!'
+        ], 200);
     }
 
     function userLogin(Request $request)
